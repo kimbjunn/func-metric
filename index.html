@@ -5,93 +5,79 @@
 :root{--bg:#faf9f7;--card:#fff;--ink:#1a1a1a;--muted:#6b6b6b;--hint:#9a9a9a;--line:#e6e4df;--accent:#185fa5;--accentbg:#e6f1fb;--ok:#0f6e56;--okbg:#e1f5ee;--err:#a32d2d;--errbg:#fcebeb;--mono:ui-monospace,SFMono-Regular,Menlo,monospace;--sans:system-ui,'Apple SD Gothic Neo','Malgun Gothic',sans-serif}
 @media(prefers-color-scheme:dark){:root{--bg:#1a1a1a;--card:#242424;--ink:#ededed;--muted:#a8a8a8;--hint:#777;--line:#3a3a3a;--accentbg:#0c2540;--okbg:#04342c;--errbg:#501313}}
 *{box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--ink);margin:0;padding:28px 16px;line-height:1.55}
-.wrap{max-width:720px;margin:0 auto}
-.card{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:22px}
+.wrap{max-width:720px;margin:0 auto}.card{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:22px}
 h1{font-size:21px;font-weight:500;margin:0 0 4px}h2{font-size:17px;font-weight:500;margin:0 0 12px}
 .lead{color:var(--muted);font-size:14px;margin:0 0 18px}
 label.f{display:block;font-size:13px;color:var(--muted);margin:14px 0 4px}
 input,select{width:100%;font-size:15px;font-family:inherit;padding:9px 10px;border:.5px solid #cbc8c0;border-radius:8px;background:var(--card);color:var(--ink)}
 @media(prefers-color-scheme:dark){input,select{border-color:#444}}
-.req{color:var(--err)}
-.consent{display:flex;gap:10px;align-items:flex-start;background:var(--accentbg);border-radius:8px;padding:12px;margin:16px 0;font-size:13.5px}
-.consent input{width:auto;margin-top:3px}
+.req{color:var(--err)}.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.consent{display:flex;gap:10px;align-items:flex-start;background:var(--accentbg);border-radius:8px;padding:12px;margin:16px 0;font-size:13.5px}.consent input{width:auto;margin-top:3px}
 .btn{font-size:15px;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:11px 20px;cursor:pointer}
-.btn.sec{background:transparent;color:var(--ink);border:.5px solid #cbc8c0}
-.btn:disabled{opacity:.45;cursor:not-allowed}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn.sec{background:transparent;color:var(--ink);border:.5px solid #cbc8c0}.btn:disabled{opacity:.45;cursor:not-allowed}
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:13px;color:var(--muted)}
 .barwrap{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .bar{flex:1;height:6px;background:var(--line);border-radius:999px;overflow:hidden}.bar>div{height:100%;background:var(--accent);transition:.25s}
-.rubric{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 16px;font-size:11.5px}
-.rubric span{padding:3px 8px;border-radius:8px;background:var(--card);border:.5px solid var(--line)}.rubric b{font-weight:500}
+.rubric{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 16px;font-size:11.5px}.rubric span{padding:3px 8px;border-radius:8px;background:var(--card);border:.5px solid var(--line)}.rubric b{font-weight:500}
 .gtlabel{font-size:12px;color:var(--muted);margin-bottom:4px}.gt{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--accent)}
 .instr{font-size:13px;color:var(--muted);border-top:.5px solid var(--line);padding-top:12px;margin-top:12px}.instr b{font-weight:500;color:var(--ink)}
 .prow{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:.5px solid var(--line);flex-wrap:wrap}
-.pname{flex:1;min-width:160px}.tag{display:inline-block;width:22px;color:var(--hint);font-size:13px}.pred{font-family:var(--mono);font-size:16px}
-.scale{display:flex;gap:6px}
-.cell{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:14px;border:.5px solid #cbc8c0;background:var(--card);color:var(--muted);cursor:pointer;user-select:none}
+.pname{flex:1;min-width:150px}.pred{font-family:var(--mono);font-size:16px}
+.scale{display:flex;gap:6px}.cell{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:14px;border:.5px solid #cbc8c0;background:var(--card);color:var(--muted);cursor:pointer;user-select:none}
 .cell.on{border-color:var(--accent);background:var(--accentbg);color:var(--accent);font-weight:500}
 .nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
 .note{font-size:12px;color:var(--hint);margin-top:8px}
-.banner{padding:12px 14px;border-radius:8px;font-size:14px;margin-bottom:14px}
-.banner.ok{background:var(--okbg);color:var(--ok)}.banner.err{background:var(--errbg);color:var(--err)}
+.banner{padding:12px 14px;border-radius:8px;font-size:14px;margin-bottom:14px}.banner.ok{background:var(--okbg);color:var(--ok)}.banner.err{background:var(--errbg);color:var(--err)}
+.status{font-size:12px}.status.ok{color:var(--ok)}.status.warn{color:var(--err)}
 .hidden{display:none}
 </style></head>
 <body><div class="wrap">
 
-<section id="intro" class="card">
+<section id="login" class="card">
   <h1>함수명 역할 유사도 평가</h1>
-  <p class="lead">스트립된 바이너리 함수명 자동 예측의 품질을, 두 함수 이름이 같은 역할을 가리키는 정도로 평정합니다. 약 20분씩 여러 세션으로 나눠 진행할 수 있으며 진행 상황은 자동 저장됩니다.</p>
+  <p class="lead">연구자에게 받은 <b>평가자 ID</b>와 <b>접속 코드</b>로 로그인하세요. 진행 상황은 자동 저장되어 다른 기기에서도 같은 ID로 이어서 할 수 있습니다.</p>
+  <div id="loginBanner"></div>
+  <label class="f">평가자 ID <span class="req">*</span></label>
+  <input id="li_rater" placeholder="rater01" autocomplete="username">
+  <label class="f">접속 코드 <span class="req">*</span></label>
+  <input id="li_pw" type="password" placeholder="연구자에게 받은 코드" autocomplete="current-password">
+  <div class="nav"><span class="note" id="loginNote"></span><button class="btn" id="loginBtn">로그인 / 이어하기</button></div>
+</section>
 
-  <div class="consent">
-    <input type="checkbox" id="consent">
-    <label for="consent">본 연구의 목적과 <b>익명 처리·자발적 참여·언제든 철회 가능</b> 방침을 이해했으며, 입력한 정보가 연구 목적으로만 사용됨에 동의합니다. <span class="req">*</span></label>
-  </div>
-
-  <label class="f">평가자 가명 ID <span class="req">*</span> <span style="color:var(--hint)">(실명 대신 식별용, 예: rater03)</span></label>
-  <input id="rater_id" placeholder="rater03">
+<section id="intro" class="card hidden">
+  <h2>참여 동의 및 기본 정보</h2>
+  <p class="lead">첫 참여 시 1회만 입력합니다. 모든 정보는 익명 처리되며 연구 목적으로만 사용됩니다.</p>
+  <div class="consent"><input type="checkbox" id="consent"><label for="consent">연구 목적·익명 처리·자발적 참여·언제든 철회 가능 방침을 이해했으며 참여에 동의합니다. <span class="req">*</span></label></div>
   <div class="row2">
     <div><label class="f">이메일 <span style="color:var(--hint)">(선택·보상/연락용)</span></label><input id="email" type="email" placeholder="optional@example.com"></div>
     <div><label class="f">소속 <span style="color:var(--hint)">(선택)</span></label><input id="affiliation" placeholder="예: ○○대 보안연구실"></div>
   </div>
   <div class="row2">
     <div><label class="f">경력 연수 <span class="req">*</span></label><input id="years" type="number" min="0" max="50" placeholder="3"></div>
-    <div><label class="f">배정 그룹 <span class="req">*</span></label>
-      <select id="group"><option value="">선택…</option><option value="1">그룹 1</option><option value="2">그룹 2</option></select></div>
-  </div>
-  <div class="row2">
     <div><label class="f">리버싱·바이너리 분석 경험 <span class="req">*</span></label>
       <select id="re_exp"><option value="">선택…</option><option value="none">없음</option><option value="basic">기초</option><option value="intermediate">중급</option><option value="expert">전문</option></select></div>
-    <div><label class="f">프로그래밍 경험 <span class="req">*</span></label>
-      <select id="prog_exp"><option value="">선택…</option><option value="basic">기초</option><option value="intermediate">중급</option><option value="advanced">고급</option></select></div>
   </div>
-  <div class="nav"><span class="note" id="introNote"></span><button class="btn" id="startBtn">평가 시작 / 이어하기</button></div>
+  <label class="f">프로그래밍 경험 <span class="req">*</span></label>
+  <select id="prog_exp"><option value="">선택…</option><option value="basic">기초</option><option value="intermediate">중급</option><option value="advanced">고급</option></select>
+  <div class="nav"><span class="note" id="introNote"></span><button class="btn" id="startBtn" disabled>평가 시작</button></div>
 </section>
 
 <section id="survey" class="hidden">
   <div class="card">
     <div class="topbar"><span id="who"></span><span id="counter"></span></div>
     <div class="barwrap"><div class="bar"><div id="prog"></div></div></div>
-    <div class="note" id="savedNote" style="margin-bottom:10px"></div>
-    <div class="rubric">
-      <span><b>5</b> 동일 역할</span><span><b>4</b> 거의 같음</span><span><b>3</b> 관련 있으나 다름</span><span><b>2</b> 약하게 통함</span><span><b>1</b> 무관</span>
-    </div>
+    <div class="note"><span id="savedNote"></span> · <span id="saveStatus" class="status"></span></div>
+    <div class="rubric"><span><b>5</b> 동일 역할</span><span><b>4</b> 거의 같음</span><span><b>3</b> 관련 있으나 다름</span><span><b>2</b> 약하게 통함</span><span><b>1</b> 무관</span></div>
     <div class="gtlabel">정답 함수명 (Ground Truth)</div>
     <div class="gt" id="gt"></div>
     <div class="instr" id="instr"></div>
     <div id="rows" style="margin-top:8px"></div>
   </div>
-  <div class="nav">
-    <button class="btn sec" id="prevBtn">◀ 이전</button>
-    <button class="btn sec" id="saveBtn">CSV 백업 저장</button>
-    <button class="btn" id="nextBtn">다음 ▶</button>
-  </div>
+  <div class="nav"><button class="btn sec" id="prevBtn">◀ 이전</button><button class="btn sec" id="csvBtn">CSV 백업</button><button class="btn" id="nextBtn">다음 ▶</button></div>
 </section>
 
 <section id="done" class="card hidden">
-  <h2>제출</h2>
-  <div id="doneBanner"></div>
-  <p class="lead" id="doneMsg"></p>
+  <h2>제출</h2><div id="doneBanner"></div><p class="lead" id="doneMsg"></p>
   <div class="nav"><button class="btn sec" id="dlBtn">응답 CSV 내려받기</button><button class="btn" id="retryBtn">다시 제출 시도</button></div>
 </section>
 
@@ -100,103 +86,114 @@ input,select{width:100%;font-size:15px;font-family:inherit;padding:9px 10px;bord
 <script src="data.js"></script>
 <script>
 const $=id=>document.getElementById(id);
-let S={info:{},blocks:[],idx:0,resp:{},started:null,variant:"A"};
+let S={rater:"",pw:"",group:1,variant:"A",personal:null,ratings:{},blocks:[],idx:0,submitted:false,saveTimer:null};
 function hsh(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
-function key(){return "fneval_"+S.info.rater_id}
-function reqOK(){
-  const ids=["rater_id","years","group","re_exp","prog_exp"];
-  const ok=$("consent").checked && ids.every(i=>$(i).value.trim());
-  $("startBtn").disabled=!ok;
-  $("introNote").textContent=ok?"":"동의 및 필수 항목(*)을 채워주세요.";
-  return ok;
+function cfgReady(){return window.SUPABASE_URL && !SUPABASE_URL.includes("YOUR-") && window.SURVEY_DB_ENABLED!==false}
+async function rpc(fn,body){
+  const r=await fetch(SUPABASE_URL+"/rest/v1/rpc/"+fn,{method:"POST",
+    headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY,"Content-Type":"application/json"},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error(r.status+" "+(await r.text()).slice(0,160));
+  return await r.json();
 }
-["consent","rater_id","years","group","re_exp","prog_exp"].forEach(i=>$(i).addEventListener("input",reqOK));
-reqOK();
+const lkey=()=>"fneval2_"+S.rater;
 
-$("startBtn").onclick=()=>{
-  if(!reqOK())return;
-  S.info={rater_id:$("rater_id").value.trim(),email:$("email").value.trim(),affiliation:$("affiliation").value.trim(),
-    years_experience:parseInt($("years").value)||null,group_id:parseInt($("group").value),
-    re_experience:$("re_exp").value,programming_experience:$("prog_exp").value,consent:true};
-  S.variant = (hsh(S.info.rater_id)%2===0)?"A":"B";
-  S.blocks=SURVEY_DATA.filter(b=>b.g===0||b.g===S.info.group_id);
-  const saved=localStorage.getItem(key());
-  if(saved){const o=JSON.parse(saved);S.resp=o.resp||{};S.started=o.started||new Date().toISOString();}
-  else S.started=new Date().toISOString();
-  $("intro").classList.add("hidden");$("survey").classList.remove("hidden");
-  $("who").textContent=S.info.rater_id+" · 그룹 "+S.info.group_id;
-  render();
+$("loginBtn").onclick=async()=>{
+  const rater=$("li_rater").value.trim(), pw=$("li_pw").value;
+  if(!rater||!pw){$("loginNote").textContent="ID와 접속 코드를 입력하세요.";return;}
+  $("loginBtn").disabled=true;$("loginNote").textContent="확인 중…";
+  if(!cfgReady()){
+    S.rater=rater;S.pw=pw;S.group=1;
+    const loc=localStorage.getItem(lkey());if(loc){const o=JSON.parse(loc);S.ratings=o.ratings||{};S.personal=o.personal||null;}
+    $("loginBanner").innerHTML='<div class="banner err">DB 미설정(로컬 테스트 모드): 응답은 이 기기에만 저장되며 CSV로만 받을 수 있습니다.</div>';
+    afterLogin();return;
+  }
+  try{
+    const res=await rpc("survey_login",{p_rater:rater,p_pw:pw});
+    if(!res||!res.ok){$("loginNote").textContent="";$("loginBanner").innerHTML='<div class="banner err">ID 또는 접속 코드가 올바르지 않습니다.</div>';$("loginBtn").disabled=false;return;}
+    S.rater=rater;S.pw=pw;S.group=res.group_id||1;S.ratings=res.ratings||{};S.personal=res.personal||null;S.submitted=!!res.submitted;
+    S.variant=res.rubric_variant||((hsh(rater)%2===0)?"A":"B");
+    const loc=localStorage.getItem(lkey());
+    if(loc){const o=JSON.parse(loc);if(Object.keys(o.ratings||{}).length>Object.keys(S.ratings).length){S.ratings=o.ratings;}if(!S.personal)S.personal=o.personal||null;}
+    afterLogin();
+  }catch(e){$("loginNote").textContent="";$("loginBanner").innerHTML='<div class="banner err">로그인 오류: '+e.message+'</div>';$("loginBtn").disabled=false;}
 };
-function totalPairs(){return S.blocks.reduce((a,b)=>a+b.items.length,0)}
-function doneCount(){return Object.keys(S.resp).length}
-function persist(){localStorage.setItem(key(),JSON.stringify({resp:S.resp,started:S.started}))}
+function afterLogin(){
+  $("login").classList.add("hidden");
+  if(S.personal){startSurvey();}
+  else{$("intro").classList.remove("hidden");}
+}
+["consent","years","re_exp","prog_exp"].forEach(i=>$(i).addEventListener("input",()=>{
+  const ok=$("consent").checked && $("years").value.trim() && $("re_exp").value && $("prog_exp").value;
+  $("startBtn").disabled=!ok;$("introNote").textContent=ok?"":"동의 및 필수 항목(*)을 채워주세요.";
+}));
+$("startBtn").onclick=()=>{
+  S.personal={email:$("email").value.trim(),affiliation:$("affiliation").value.trim(),years_experience:parseInt($("years").value)||null,
+    re_experience:$("re_exp").value,programming_experience:$("prog_exp").value,consent:true};
+  $("intro").classList.add("hidden");checkpoint(false);startSurvey();
+};
+
+function startSurvey(){
+  S.blocks=SURVEY_DATA.filter(b=>b.g===0||b.g===S.group);
+  let first=S.blocks.findIndex(b=>b.preds.some(p=>!((b.b+"::"+p) in S.ratings)));
+  S.idx=first<0?0:first;
+  $("survey").classList.remove("hidden");$("who").textContent=S.rater+" · 그룹 "+S.group;
+  if(S.submitted)$("saveStatus").textContent="(이미 제출됨 — 수정 후 다시 제출 가능)";
+  render();
+}
+const total=()=>S.blocks.reduce((a,b)=>a+b.preds.length,0);
+const done=()=>Object.keys(S.ratings).length;
 function render(){
   const b=S.blocks[S.idx];
   $("gt").textContent=b.gt;
-  $("instr").innerHTML = S.variant==="A"
-    ? '아래 예측 이름이 위 함수와 <b>같은 기능적 역할</b>을 가리키는 정도를 평정하세요. 모델 정체는 가려져 있습니다.'
-    : '아래 예측 이름을 본 분석가가 위 함수를 <b>같은 함수로 인지</b>할 정도를 평정하세요. 모델 정체는 가려져 있습니다.';
+  $("instr").innerHTML=S.variant==="A"
+    ?'아래 예측 이름이 위 함수와 <b>같은 기능적 역할</b>을 가리키는 정도를 평정하세요.'
+    :'아래 예측 이름을 본 분석가가 위 함수를 <b>같은 함수로 인지</b>할 정도를 평정하세요.';
   let h="";
-  b.items.forEach(it=>{
-    const id=b.b+"_"+it.m,cur=S.resp[id]?.score;
-    let cells="";for(let v=5;v>=1;v--)cells+=`<div class="cell ${cur==v?'on':''}" onclick="setScore(${b.b},'${it.m}',${v})">${v}</div>`;
-    h+=`<div class="prow"><div class="pname"><span class="tag">${it.m}</span><span class="pred">${it.pred||'(빈 예측)'}</span></div><div class="scale">${cells}</div></div>`;
+  b.preds.forEach(p=>{
+    const k=b.b+"::"+p, cur=S.ratings[k]?S.ratings[k].s:null;
+    const pe=p.replace(/'/g,"\\'");
+    let cells="";for(let v=5;v>=1;v--)cells+='<div class="cell '+(cur==v?'on':'')+'" onclick="setScore(\''+b.b+'\',\''+pe+'\','+v+')">'+v+'</div>';
+    h+='<div class="prow"><div class="pname"><span class="pred">'+(p||'(빈 예측)')+'</span></div><div class="scale">'+cells+'</div></div>';
   });
   $("rows").innerHTML=h;
-  const dc=doneCount(),tp=totalPairs();
-  $("counter").textContent=`블록 ${S.idx+1} / ${S.blocks.length}`;
-  $("prog").style.width=(100*dc/tp)+"%";
-  $("savedNote").textContent=`평정 ${dc} / ${tp} · 자동 저장됨`;
+  $("counter").textContent="블록 "+(S.idx+1)+" / "+S.blocks.length;
+  $("prog").style.width=(100*done()/total())+"%";
+  $("savedNote").textContent="평정 "+done()+" / "+total();
   $("prevBtn").disabled=S.idx===0;
-  $("nextBtn").textContent = S.idx===S.blocks.length-1 ? "제출하기 ✓" : "다음 ▶";
+  $("nextBtn").textContent=S.idx===S.blocks.length-1?"제출하기 ✓":"다음 ▶";
 }
-function setScore(block,m,v){
-  const b=S.blocks[S.idx],it=b.items.find(x=>x.m===m);
-  S.resp[block+"_"+m]={score:v,block,masked_model:m,gt:b.gt,pred:it.pred,client_ts:new Date().toISOString()};
-  persist();render();
+function setScore(b,pred,v){
+  const blk=S.blocks.find(x=>String(x.b)===String(b));
+  S.ratings[b+"::"+pred]={b:+b,gt:blk.gt,pred:pred,s:v,t:new Date().toISOString()};
+  localStorage.setItem(lkey(),JSON.stringify({ratings:S.ratings,personal:S.personal}));
+  render();scheduleSave();
+}
+function scheduleSave(){clearTimeout(S.saveTimer);$("saveStatus").textContent="저장 중…";$("saveStatus").className="status";S.saveTimer=setTimeout(()=>checkpoint(false),1200);}
+async function checkpoint(submit){
+  localStorage.setItem(lkey(),JSON.stringify({ratings:S.ratings,personal:S.personal}));
+  if(!cfgReady()){$("saveStatus").textContent="로컬 저장됨";$("saveStatus").className="status ok";return true;}
+  try{
+    const res=await rpc("survey_save",{p_rater:S.rater,p_pw:S.pw,p_personal:S.personal,p_ratings:S.ratings,p_variant:S.variant,p_submitted:!!submit});
+    if(!res||!res.ok)throw new Error("인증 실패");
+    $("saveStatus").textContent="저장됨 ✓";$("saveStatus").className="status ok";return true;
+  }catch(e){$("saveStatus").textContent="오프라인 — 자동 재시도";$("saveStatus").className="status warn";return false;}
 }
 $("prevBtn").onclick=()=>{if(S.idx>0){S.idx--;render()}};
-$("nextBtn").onclick=()=>{if(S.idx<S.blocks.length-1){S.idx++;render()}else finish()};
-$("saveBtn").onclick=downloadCSV;$("dlBtn").onclick=downloadCSV;$("retryBtn").onclick=submitDB;
-
-function rowsForSubmit(){
-  const uuid=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random());
-  const base={submission_uuid:uuid,rater_id:S.info.rater_id,email:S.info.email,affiliation:S.info.affiliation,
-    years_experience:S.info.years_experience,re_experience:S.info.re_experience,programming_experience:S.info.programming_experience,
-    consent:true,group_id:S.info.group_id,rubric_variant:S.variant,session_started_at:S.started};
-  return Object.values(S.resp).map(r=>({...base,block:r.block,masked_model:r.masked_model,gt:r.gt,pred:r.pred,score:r.score,client_ts:r.client_ts}));
-}
-function finish(){
-  const dc=doneCount(),tp=totalPairs();
-  if(dc<tp && !confirm(`${tp-dc}개 문항이 비어 있습니다. 그대로 제출할까요? (나중에 이어서 제출도 가능)`))return;
-  $("survey").classList.add("hidden");$("done").classList.remove("hidden");
-  submitDB();
-}
-async function submitDB(){
-  const rows=rowsForSubmit();
-  $("doneBanner").innerHTML="";$("doneMsg").textContent="제출 중…";
-  if(window.SURVEY_DB_ENABLED===false||!window.SUPABASE_URL||SUPABASE_URL.includes("YOUR-")){
-    $("doneBanner").innerHTML='<div class="banner err">DB가 설정되지 않았습니다. 아래 버튼으로 CSV를 내려받아 연구자에게 전달해 주세요.</div>';
-    $("doneMsg").textContent="("+rows.length+"개 응답 준비됨)";return;
-  }
-  try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/survey_responses`,{method:"POST",
-      headers:{"apikey":SUPABASE_ANON_KEY,"Authorization":"Bearer "+SUPABASE_ANON_KEY,"Content-Type":"application/json","Prefer":"return=minimal"},
-      body:JSON.stringify(rows)});
-    if(res.ok){
-      $("doneBanner").innerHTML='<div class="banner ok">제출 완료. 참여해 주셔서 감사합니다.</div>';
-      $("doneMsg").textContent=rows.length+"개 응답이 저장되었습니다. 추가 세션은 같은 기기·같은 ID로 이어집니다.";
-    }else{const t=await res.text();throw new Error(res.status+" "+t.slice(0,200));}
-  }catch(e){
-    $("doneBanner").innerHTML='<div class="banner err">전송 실패: '+e.message+'</div>';
-    $("doneMsg").textContent="아래 'CSV 내려받기'로 백업을 저장해 연구자에게 전달해 주세요. 응답은 기기에 보관되어 '다시 제출 시도'도 가능합니다.";
-  }
+$("nextBtn").onclick=()=>{checkpoint(false);if(S.idx<S.blocks.length-1){S.idx++;render()}else finish()};
+$("csvBtn").onclick=downloadCSV;$("dlBtn").onclick=downloadCSV;$("retryBtn").onclick=()=>finish();
+async function finish(){
+  const d=done(),tp=total();
+  if(d<tp && !confirm((tp-d)+"개 문항이 비어 있습니다. 그대로 제출할까요? (나중에 같은 ID로 이어서 제출 가능)"))return;
+  $("survey").classList.add("hidden");$("done").classList.remove("hidden");$("doneMsg").textContent="제출 중…";$("doneBanner").innerHTML="";
+  const ok=await checkpoint(true);
+  if(ok){S.submitted=true;$("doneBanner").innerHTML='<div class="banner ok">제출 완료. 참여해 주셔서 감사합니다.</div>';$("doneMsg").textContent=d+"개 응답이 저장되었습니다.";}
+  else{$("doneBanner").innerHTML='<div class="banner err">전송 실패 — 네트워크 확인 후 다시 시도하거나 CSV 백업을 연구자에게 전달해 주세요.</div>';$("doneMsg").textContent="응답은 기기에 보관되어 있습니다.";}
 }
 function downloadCSV(){
-  const rows=rowsForSubmit();
-  const cols=["submission_uuid","rater_id","email","affiliation","years_experience","re_experience","programming_experience","group_id","rubric_variant","session_started_at","block","masked_model","gt","pred","score","client_ts"];
+  const cols=["rater_id","group_id","rubric_variant","block","gt","pred","score","ts"];
   let c=cols.join(",")+"\n";
-  rows.forEach(r=>c+=cols.map(k=>{const v=r[k]==null?"":String(r[k]);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(",")+"\n");
-  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:"text/csv"}));a.download="eval_"+S.info.rater_id+".csv";a.click();
+  Object.values(S.ratings).forEach(r=>{const row=[S.rater,S.group,S.variant,r.b,r.gt,r.pred,r.s,r.t];
+    c+=row.map(v=>{v=String(v==null?"":v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(",")+"\n";});
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([c],{type:"text/csv"}));a.download="eval_"+S.rater+".csv";a.click();
 }
 </script></body></html>
