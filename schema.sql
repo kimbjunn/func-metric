@@ -1,80 +1,102 @@
 -- ============================================================================
--- Supabase schema v2 — gated login + per-rater checkpoint/resume
+-- Supabase schema v3 — self-registration (user-set ID/PW) + recovery
 -- Run ONCE: Supabase dashboard -> SQL Editor -> paste all -> Run.
--- (The earlier 404 "Could not find table survey_responses" just meant the
---  schema had not been created yet. This v2 replaces that design.)
 -- ============================================================================
+create extension if not exists pgcrypto with schema extensions;  -- bcrypt for passwords
 
-drop table if exists survey_responses cascade;   -- remove old insert-only design if present
+drop table if exists survey_responses cascade;
+drop table if exists survey_progress  cascade;
+drop table if exists allowed_raters   cascade;
+drop function if exists survey_save(text,text,jsonb,jsonb,text,boolean);
 
--- 1) Allowed raters (researcher seeds these). password = study access code.
-create table if not exists allowed_raters (
-  rater_id  text primary key,
-  password  text not null,
-  group_id  int  not null default 1            -- 1 or 2; core blocks shown to all
+-- Accounts + demographics + progress, one row per participant.
+create table if not exists raters (
+  rater_id       text primary key,                 -- user-chosen
+  password_hash  text not null,                    -- bcrypt
+  email          text not null,                    -- recovery anchor
+  group_id       int  not null,                    -- auto-assigned, balanced
+  rubric_variant text not null,                    -- A/B
+  personal       jsonb,                            -- {affiliation,years,re_exp,prog_exp,consent}
+  ratings        jsonb not null default '{}'::jsonb,
+  submitted      boolean not null default false,
+  created_at     timestamptz not null default now(),
+  updated_at     timestamptz not null default now()
 );
+create unique index if not exists raters_email_lower on raters (lower(email));
 
--- 2) Per-rater progress (jsonb checkpoint -> resume on any device)
-create table if not exists survey_progress (
-  rater_id        text primary key references allowed_raters(rater_id),
-  personal        jsonb,
-  ratings         jsonb not null default '{}'::jsonb,
-  rubric_variant  text,
-  submitted       boolean not null default false,
-  started_at      timestamptz not null default now(),
-  updated_at      timestamptz not null default now()
-);
+-- Optional study-wide invite gate (off unless a row exists).
+create table if not exists survey_config (key text primary key, value text);
+-- To REQUIRE an invite code for signup:  insert into survey_config values ('invite_code','YOUR-CODE');
 
--- 3) Lock tables: no direct anon access; all access via password-checked RPCs.
-alter table allowed_raters  enable row level security;
-alter table survey_progress enable row level security;
-revoke all on allowed_raters  from anon;
-revoke all on survey_progress from anon;
+alter table raters        enable row level security;
+alter table survey_config enable row level security;
+revoke all on raters        from anon;
+revoke all on survey_config from anon;
 
--- 4) LOGIN: verify (rater,password); return group + saved progress.
-create or replace function survey_login(p_rater text, p_pw text)
-returns jsonb language plpgsql security definer set search_path = public as $$
-declare v_grp int; v_row survey_progress;
+-- SIGNUP: create account (checks id/email uniqueness, optional invite, balances group)
+create or replace function survey_signup(p_id text, p_pw text, p_email text, p_personal jsonb, p_invite text default null)
+returns jsonb language plpgsql security definer set search_path = public, extensions as $$
+declare v_need text; v_g1 int; v_g2 int; v_grp int; v_var text;
 begin
-  select group_id into v_grp from allowed_raters where rater_id = p_rater and password = p_pw;
-  if v_grp is null then return jsonb_build_object('ok', false); end if;
-  select * into v_row from survey_progress where rater_id = p_rater;
-  return jsonb_build_object(
-    'ok', true, 'group_id', v_grp,
-    'ratings',   coalesce(v_row.ratings, '{}'::jsonb),
-    'personal',  v_row.personal,
-    'rubric_variant', v_row.rubric_variant,
-    'submitted', coalesce(v_row.submitted, false));
+  select value into v_need from survey_config where key='invite_code';
+  if v_need is not null and coalesce(p_invite,'') <> v_need then return jsonb_build_object('ok',false,'reason','invite'); end if;
+  if length(coalesce(p_id,''))<3 or length(coalesce(p_pw,''))<4 then return jsonb_build_object('ok',false,'reason','short'); end if;
+  if exists(select 1 from raters where rater_id=p_id) then return jsonb_build_object('ok',false,'reason','id_taken'); end if;
+  if exists(select 1 from raters where lower(email)=lower(p_email)) then return jsonb_build_object('ok',false,'reason','email_taken'); end if;
+  select count(*) filter (where group_id=1), count(*) filter (where group_id=2) into v_g1,v_g2 from raters;
+  v_grp := case when coalesce(v_g1,0) <= coalesce(v_g2,0) then 1 else 2 end;
+  v_var := case when (abs(hashtext(p_id))%2)=0 then 'A' else 'B' end;
+  insert into raters(rater_id,password_hash,email,group_id,rubric_variant,personal)
+    values (p_id, crypt(p_pw, gen_salt('bf')), p_email, v_grp, v_var, p_personal);
+  return jsonb_build_object('ok',true,'group_id',v_grp,'rubric_variant',v_var);
 end $$;
 
--- 5) SAVE: checkpoint or final submit; verify (rater,password); upsert progress.
-create or replace function survey_save(
-  p_rater text, p_pw text, p_personal jsonb, p_ratings jsonb, p_variant text, p_submitted boolean)
-returns jsonb language plpgsql security definer set search_path = public as $$
-declare v_grp int;
+-- LOGIN
+create or replace function survey_login(p_id text, p_pw text)
+returns jsonb language plpgsql security definer set search_path = public, extensions as $$
+declare r raters;
 begin
-  select group_id into v_grp from allowed_raters where rater_id = p_rater and password = p_pw;
-  if v_grp is null then return jsonb_build_object('ok', false); end if;
-  insert into survey_progress(rater_id, personal, ratings, rubric_variant, submitted, updated_at)
-    values (p_rater, p_personal, coalesce(p_ratings,'{}'::jsonb), p_variant, coalesce(p_submitted,false), now())
-  on conflict (rater_id) do update set
-    personal       = coalesce(excluded.personal, survey_progress.personal),
-    ratings        = excluded.ratings,
-    rubric_variant = coalesce(excluded.rubric_variant, survey_progress.rubric_variant),
-    submitted      = excluded.submitted,
-    updated_at     = now();
-  return jsonb_build_object('ok', true);
+  select * into r from raters where rater_id=p_id;
+  if r.rater_id is null or r.password_hash <> crypt(p_pw, r.password_hash) then return jsonb_build_object('ok',false); end if;
+  return jsonb_build_object('ok',true,'group_id',r.group_id,'rubric_variant',r.rubric_variant,
+    'ratings',r.ratings,'personal',r.personal,'submitted',r.submitted);
 end $$;
 
+-- SAVE (checkpoint / submit)
+create or replace function survey_save(p_id text, p_pw text, p_ratings jsonb, p_submitted boolean)
+returns jsonb language plpgsql security definer set search_path = public, extensions as $$
+declare r raters;
+begin
+  select * into r from raters where rater_id=p_id;
+  if r.rater_id is null or r.password_hash <> crypt(p_pw, r.password_hash) then return jsonb_build_object('ok',false); end if;
+  update raters set ratings=coalesce(p_ratings,'{}'::jsonb), submitted=coalesce(p_submitted,false), updated_at=now() where rater_id=p_id;
+  return jsonb_build_object('ok',true);
+end $$;
+
+-- RECOVERY: find ID by email
+create or replace function survey_find_id(p_email text)
+returns jsonb language plpgsql security definer set search_path = public, extensions as $$
+declare v_id text;
+begin
+  select rater_id into v_id from raters where lower(email)=lower(p_email) limit 1;
+  if v_id is null then return jsonb_build_object('found',false); end if;
+  return jsonb_build_object('found',true,'rater_id',v_id);
+end $$;
+
+-- RECOVERY: reset password with ID + matching email
+create or replace function survey_reset_pw(p_id text, p_email text, p_new_pw text)
+returns jsonb language plpgsql security definer set search_path = public, extensions as $$
+begin
+  if length(coalesce(p_new_pw,''))<4 then return jsonb_build_object('ok',false,'reason','short'); end if;
+  if not exists(select 1 from raters where rater_id=p_id and lower(email)=lower(p_email)) then return jsonb_build_object('ok',false,'reason','nomatch'); end if;
+  update raters set password_hash=crypt(p_new_pw, gen_salt('bf')), updated_at=now() where rater_id=p_id;
+  return jsonb_build_object('ok',true);
+end $$;
+
+grant execute on function survey_signup(text,text,text,jsonb,text) to anon;
 grant execute on function survey_login(text,text) to anon;
-grant execute on function survey_save(text,text,jsonb,jsonb,text,boolean) to anon;
+grant execute on function survey_save(text,text,jsonb,boolean) to anon;
+grant execute on function survey_find_id(text) to anon;
+grant execute on function survey_reset_pw(text,text,text) to anon;
 
--- 6) Seed your raters (EDIT passwords; add ~10). group_id = 1 or 2.
-insert into allowed_raters(rater_id, password, group_id) values
-  ('rater01','CHANGE-ME-01',1),
-  ('rater02','CHANGE-ME-02',2),
-  ('rater03','CHANGE-ME-03',1)
-on conflict (rater_id) do nothing;
-
--- 7) Refresh PostgREST schema cache (so RPCs are visible immediately).
 notify pgrst, 'reload schema';

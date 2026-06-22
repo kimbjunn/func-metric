@@ -2,64 +2,111 @@
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>함수명 역할 유사도 평가</title>
 <style>
-:root{--bg:#faf9f7;--card:#fff;--ink:#1a1a1a;--muted:#6b6b6b;--hint:#9a9a9a;--line:#e6e4df;--accent:#185fa5;--accentbg:#e6f1fb;--ok:#0f6e56;--okbg:#e1f5ee;--err:#a32d2d;--errbg:#fcebeb;--mono:ui-monospace,SFMono-Regular,Menlo,monospace;--sans:system-ui,'Apple SD Gothic Neo','Malgun Gothic',sans-serif}
-@media(prefers-color-scheme:dark){:root{--bg:#1a1a1a;--card:#242424;--ink:#ededed;--muted:#a8a8a8;--hint:#777;--line:#3a3a3a;--accentbg:#0c2540;--okbg:#04342c;--errbg:#501313}}
-*{box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--ink);margin:0;padding:28px 16px;line-height:1.55}
-.wrap{max-width:720px;margin:0 auto}.card{background:var(--card);border:.5px solid var(--line);border-radius:12px;padding:22px}
-h1{font-size:21px;font-weight:500;margin:0 0 4px}h2{font-size:17px;font-weight:500;margin:0 0 12px}
-.lead{color:var(--muted);font-size:14px;margin:0 0 18px}
-label.f{display:block;font-size:13px;color:var(--muted);margin:14px 0 4px}
-input,select{width:100%;font-size:15px;font-family:inherit;padding:9px 10px;border:.5px solid #cbc8c0;border-radius:8px;background:var(--card);color:var(--ink)}
-@media(prefers-color-scheme:dark){input,select{border-color:#444}}
-.req{color:var(--err)}.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.consent{display:flex;gap:10px;align-items:flex-start;background:var(--accentbg);border-radius:8px;padding:12px;margin:16px 0;font-size:13.5px}.consent input{width:auto;margin-top:3px}
-.btn{font-size:15px;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:11px 20px;cursor:pointer}
-.btn.sec{background:transparent;color:var(--ink);border:.5px solid #cbc8c0}.btn:disabled{opacity:.45;cursor:not-allowed}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:13px;color:var(--muted)}
+@import url('https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.min.css');
+:root{--bg:#f6f5f9;--card:#fff;--ink:#1a1a2e;--muted:#5c5c70;--hint:#9a9aac;--line:#e7e6ee;--accent:#6d28d9;--accent2:#7c3aed;--accentbg:#f1ebfd;--pink:#e879f9;--ok:#0f6e56;--okbg:#e7f6f0;--err:#c02626;--errbg:#fdecec;--mono:ui-monospace,SFMono-Regular,Menlo,monospace;--sans:'Pretendard','Pretendard Variable',system-ui,'Apple SD Gothic Neo',sans-serif}
+@media(prefers-color-scheme:dark){:root{--bg:#15151c;--card:#20202a;--ink:#ededf2;--muted:#a8a8b8;--hint:#777;--line:#33333f;--accentbg:#241a3d;--okbg:#0c2a22;--errbg:#3a1414}}
+*{box-sizing:border-box}body{font-family:var(--sans);background:var(--bg);color:var(--ink);margin:0;padding:0 16px 40px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto}
+.hero{position:relative;overflow:hidden;background:var(--accent);color:#fff;border-radius:0 0 22px 22px;padding:30px 28px 34px;margin:0 -16px 22px}
+@media(min-width:792px){.hero{margin:24px 0 22px;border-radius:22px}}
+.hero-brand{font-size:12px;letter-spacing:.05em;font-weight:700;text-transform:uppercase;opacity:.88;margin-bottom:9px}
+.hero-title{font-size:25px;font-weight:800;margin:0}
+.hero-sub{font-size:14px;opacity:.92;margin:7px 0 0;font-style:italic}
+.hero-circle{position:absolute;top:-48px;right:-26px;width:132px;height:132px;border-radius:50%;background:var(--pink);opacity:.5}
+.hero-circle.two{top:34px;right:64px;width:44px;height:44px;opacity:.3}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
+h2{font-size:18px;font-weight:800;margin:0 0 12px}
+.sub{font-size:14px;font-weight:700;margin:18px 0 4px}
+.lead{color:var(--muted);font-size:14px;margin:0 0 18px;font-style:italic}
+label.f{display:block;font-size:13.5px;font-weight:700;color:var(--ink);margin:16px 0 6px}
+input,select{width:100%;font-size:15px;font-family:inherit;padding:11px 12px;border:1px solid #d6d4e0;border-radius:10px;background:var(--card);color:var(--ink)}
+input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accentbg)}
+@media(prefers-color-scheme:dark){input,select{border-color:#444452}}
+.req{color:var(--err)}.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+a{color:var(--accent);cursor:pointer;text-decoration:none;font-weight:600}
+.consent{display:flex;gap:10px;align-items:flex-start;background:var(--accentbg);border-radius:10px;padding:13px;margin:16px 0;font-size:13.5px;color:var(--ink)}.consent input{width:auto;margin-top:3px}
+.btn{font-size:15px;font-weight:700;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:12px 22px;cursor:pointer}
+.btn:hover{background:var(--accent2)}
+.btn.sec{background:transparent;color:var(--accent);border:1px solid #d6d4e0}.btn.sec:hover{background:var(--accentbg)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:13px;color:var(--muted);font-weight:600}
 .barwrap{display:flex;align-items:center;gap:10px;margin-bottom:6px}
-.bar{flex:1;height:6px;background:var(--line);border-radius:999px;overflow:hidden}.bar>div{height:100%;background:var(--accent);transition:.25s}
-.rubric{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 16px;font-size:11.5px}.rubric span{padding:3px 8px;border-radius:8px;background:var(--card);border:.5px solid var(--line)}.rubric b{font-weight:500}
-.gtlabel{font-size:12px;color:var(--muted);margin-bottom:4px}.gt{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--accent)}
-.instr{font-size:13px;color:var(--muted);border-top:.5px solid var(--line);padding-top:12px;margin-top:12px}.instr b{font-weight:500;color:var(--ink)}
-.prow{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:.5px solid var(--line);flex-wrap:wrap}
-.pname{flex:1;min-width:150px}.pred{font-family:var(--mono);font-size:16px}
-.scale{display:flex;gap:6px}.cell{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:14px;border:.5px solid #cbc8c0;background:var(--card);color:var(--muted);cursor:pointer;user-select:none}
-.cell.on{border-color:var(--accent);background:var(--accentbg);color:var(--accent);font-weight:500}
-.nav{display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:10px}
-.note{font-size:12px;color:var(--hint);margin-top:8px}
-.banner{padding:12px 14px;border-radius:8px;font-size:14px;margin-bottom:14px}.banner.ok{background:var(--okbg);color:var(--ok)}.banner.err{background:var(--errbg);color:var(--err)}
-.status{font-size:12px}.status.ok{color:var(--ok)}.status.warn{color:var(--err)}
+.bar{flex:1;height:8px;background:var(--line);border-radius:999px;overflow:hidden}.bar>div{height:100%;background:var(--accent);transition:.25s}
+.rubric{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 16px;font-size:11.5px}.rubric span{padding:4px 9px;border-radius:8px;background:var(--accentbg);color:var(--accent)}.rubric b{font-weight:800}
+.gtlabel{font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600}.gt{font-family:var(--sans);font-size:23px;font-weight:700;color:var(--accent)}
+.instr{font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.instr b{font-weight:700;color:var(--ink)}
+.prow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.pname{flex:1;min-width:150px}.pred{font-family:var(--sans);font-size:16px;font-weight:500}
+.scale{display:flex;gap:7px}.cell{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:14px;font-weight:700;border:1px solid #d6d4e0;background:var(--card);color:var(--muted);cursor:pointer;user-select:none;transition:.12s}
+.cell:hover{border-color:var(--accent)}.cell.on{border-color:var(--accent);background:var(--accent);color:#fff}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:10px}
+.note{font-size:12.5px;color:var(--hint);margin-top:8px}
+.banner{padding:12px 14px;border-radius:10px;font-size:14px;margin-bottom:14px}.banner.ok{background:var(--okbg);color:var(--ok)}.banner.err{background:var(--errbg);color:var(--err)}
+.status{font-size:12px;font-weight:600}.status.ok{color:var(--ok)}.status.warn{color:var(--err)}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 .hidden{display:none}
 </style></head>
 <body><div class="wrap">
+<header class="hero">
+  <div class="hero-circle"></div><div class="hero-circle two"></div>
+  <div class="hero-brand">SKKU · 심볼추론 평가지표 연구</div>
+  <h1 class="hero-title">함수명 역할 유사도 평가</h1>
+  <p class="hero-sub">두 함수 이름이 같은 역할을 가리키는지 평가합니다.</p>
+</header>
 
 <section id="login" class="card">
-  <h1>함수명 역할 유사도 평가</h1>
-  <p class="lead">연구자에게 받은 <b>평가자 ID</b>와 <b>접속 코드</b>로 로그인하세요. 진행 상황은 자동 저장되어 다른 기기에서도 같은 ID로 이어서 할 수 있습니다.</p>
+  <h2>로그인</h2>
+  <p class="lead">계정으로 로그인해 주세요. 진행 상황이 자동으로 저장되어 다른 기기에서도 이어서 진행할 수 있습니다.</p>
   <div id="loginBanner"></div>
-  <label class="f">평가자 ID <span class="req">*</span></label>
-  <input id="li_rater" placeholder="rater01" autocomplete="username">
-  <label class="f">접속 코드 <span class="req">*</span></label>
-  <input id="li_pw" type="password" placeholder="연구자에게 받은 코드" autocomplete="current-password">
+  <label class="f">아이디 <span class="req">*</span></label><input id="li_id" autocomplete="username" placeholder="myid">
+  <label class="f">비밀번호 <span class="req">*</span></label><input id="li_pw" type="password" autocomplete="current-password">
   <div class="nav"><span class="note" id="loginNote"></span><button class="btn" id="loginBtn">로그인 / 이어하기</button></div>
+  <p class="note" style="margin-top:14px">처음이신가요? <a id="toSignup">회원가입</a> · <a id="toRecover">아이디·비밀번호 찾기</a></p>
 </section>
 
-<section id="intro" class="card hidden">
-  <h2>참여 동의 및 기본 정보</h2>
-  <p class="lead">첫 참여 시 1회만 입력합니다. 모든 정보는 익명 처리되며 연구 목적으로만 사용됩니다.</p>
-  <div class="consent"><input type="checkbox" id="consent"><label for="consent">연구 목적·익명 처리·자발적 참여·언제든 철회 가능 방침을 이해했으며 참여에 동의합니다. <span class="req">*</span></label></div>
+<section id="signup" class="card hidden">
+  <h2>회원가입</h2>
+  <p class="lead">아이디와 비밀번호를 직접 정합니다. 비밀번호를 잊으면 가입 이메일로 재설정할 수 있습니다. 모든 정보는 익명 처리되며 연구 목적으로만 사용됩니다.</p>
+  <div id="signupBanner"></div>
+  <div class="consent"><input type="checkbox" id="su_consent"><label for="su_consent">연구 목적과 익명 처리, 자발적 참여, 그리고 언제든 철회할 수 있다는 점을 이해했으며 참여에 동의합니다. <span class="req">*</span></label></div>
   <div class="row2">
-    <div><label class="f">이메일 <span style="color:var(--hint)">(선택·보상/연락용)</span></label><input id="email" type="email" placeholder="optional@example.com"></div>
-    <div><label class="f">소속 <span style="color:var(--hint)">(선택)</span></label><input id="affiliation" placeholder="예: ○○대 보안연구실"></div>
+    <div><label class="f">아이디 <span class="req">*</span> <span style="color:var(--hint)">(3자 이상)</span></label><input id="su_id" placeholder="myid"></div>
+    <div><label class="f">이메일 <span class="req">*</span> <span style="color:var(--hint)">(분실 시 복구용)</span></label><input id="su_email" type="email" placeholder="you@example.com"></div>
   </div>
   <div class="row2">
-    <div><label class="f">경력 연수 <span class="req">*</span></label><input id="years" type="number" min="0" max="50" placeholder="3"></div>
+    <div><label class="f">비밀번호 <span class="req">*</span> <span style="color:var(--hint)">(4자 이상)</span></label><input id="su_pw" type="password" autocomplete="new-password"></div>
+    <div><label class="f">비밀번호 확인 <span class="req">*</span></label><input id="su_pw2" type="password" autocomplete="new-password"></div>
+  </div>
+  <div class="row2">
+    <div><label class="f">경력 연수 <span class="req">*</span></label><input id="su_years" type="number" min="0" max="50" placeholder="3"></div>
     <div><label class="f">리버싱·바이너리 분석 경험 <span class="req">*</span></label>
-      <select id="re_exp"><option value="">선택…</option><option value="none">없음</option><option value="basic">기초</option><option value="intermediate">중급</option><option value="expert">전문</option></select></div>
+      <select id="su_re"><option value="">선택…</option><option value="none">없음</option><option value="basic">기초</option><option value="intermediate">중급</option><option value="expert">전문</option></select></div>
   </div>
-  <label class="f">프로그래밍 경험 <span class="req">*</span></label>
-  <select id="prog_exp"><option value="">선택…</option><option value="basic">기초</option><option value="intermediate">중급</option><option value="advanced">고급</option></select>
-  <div class="nav"><span class="note" id="introNote"></span><button class="btn" id="startBtn" disabled>평가 시작</button></div>
+  <div class="row2">
+    <div><label class="f">프로그래밍 경험 <span class="req">*</span></label>
+      <select id="su_prog"><option value="">선택…</option><option value="basic">기초</option><option value="intermediate">중급</option><option value="advanced">고급</option></select></div>
+    <div><label class="f">소속 <span style="color:var(--hint)">(선택)</span></label><input id="su_aff" placeholder="○○대 보안연구실"></div>
+  </div>
+  <label class="f">초대 코드 <span style="color:var(--hint)">(연구자가 요구한 경우만)</span></label><input id="su_invite" placeholder="(없으면 비워두세요)">
+  <div class="nav"><span class="note" id="signupNote"></span><button class="btn" id="signupBtn" disabled>가입하고 시작</button></div>
+  <p class="note" style="margin-top:14px">이미 계정이 있나요? <a id="toLogin1">로그인</a></p>
+</section>
+
+<section id="recover" class="card hidden">
+  <h2>아이디·비밀번호 찾기</h2>
+  <div id="recoverBanner"></div>
+  <div class="sub">아이디 찾기</div>
+  <label class="f">가입 이메일</label><input id="rc_email" type="email" placeholder="you@example.com">
+  <div class="nav"><span class="note" id="findIdRes"></span><button class="btn sec" id="findIdBtn">아이디 찾기</button></div>
+  <hr>
+  <div class="sub">비밀번호 재설정</div>
+  <div class="row2">
+    <div><label class="f">아이디</label><input id="rc_id" placeholder="myid"></div>
+    <div><label class="f">가입 이메일</label><input id="rc_email2" type="email" placeholder="you@example.com"></div>
+  </div>
+  <label class="f">새 비밀번호 <span style="color:var(--hint)">(4자 이상)</span></label><input id="rc_newpw" type="password" autocomplete="new-password">
+  <div class="nav"><span class="note" id="resetRes"></span><button class="btn sec" id="resetBtn">비밀번호 재설정</button></div>
+  <p class="note" style="margin-top:14px"><a id="toLogin2">로그인으로 돌아가기</a></p>
 </section>
 
 <section id="survey" class="hidden">
@@ -67,7 +114,7 @@ input,select{width:100%;font-size:15px;font-family:inherit;padding:9px 10px;bord
     <div class="topbar"><span id="who"></span><span id="counter"></span></div>
     <div class="barwrap"><div class="bar"><div id="prog"></div></div></div>
     <div class="note"><span id="savedNote"></span> · <span id="saveStatus" class="status"></span></div>
-    <div class="rubric"><span><b>5</b> 동일 역할</span><span><b>4</b> 거의 같음</span><span><b>3</b> 관련 있으나 다름</span><span><b>2</b> 약하게 통함</span><span><b>1</b> 무관</span></div>
+    <div class="rubric"><span><b>5</b> 동일 역할</span><span><b>4</b> 거의 같음</span><span><b>3</b> 관련 있으나 다름</span><span><b>2</b> 약하게 관련</span><span><b>1</b> 무관</span></div>
     <div class="gtlabel">정답 함수명 (Ground Truth)</div>
     <div class="gt" id="gt"></div>
     <div class="instr" id="instr"></div>
@@ -87,7 +134,6 @@ input,select{width:100%;font-size:15px;font-family:inherit;padding:9px 10px;bord
 <script>
 const $=id=>document.getElementById(id);
 let S={rater:"",pw:"",group:1,variant:"A",personal:null,ratings:{},blocks:[],idx:0,submitted:false,saveTimer:null};
-function hsh(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))>>>0;return h}
 function cfgReady(){return window.SUPABASE_URL && !SUPABASE_URL.includes("YOUR-") && window.SURVEY_DB_ENABLED!==false}
 async function rpc(fn,body){
   const r=await fetch(SUPABASE_URL+"/rest/v1/rpc/"+fn,{method:"POST",
@@ -95,86 +141,97 @@ async function rpc(fn,body){
   if(!r.ok)throw new Error(r.status+" "+(await r.text()).slice(0,160));
   return await r.json();
 }
-const lkey=()=>"fneval2_"+S.rater;
+const lkey=()=>"fneval3_"+S.rater;
+function show(id){["login","signup","recover","survey","done"].forEach(s=>$(s).classList.toggle("hidden",s!==id));}
+$("toSignup").onclick=()=>show("signup");$("toRecover").onclick=()=>show("recover");
+$("toLogin1").onclick=()=>show("login");$("toLogin2").onclick=()=>show("login");
 
 $("loginBtn").onclick=async()=>{
-  const rater=$("li_rater").value.trim(), pw=$("li_pw").value;
-  if(!rater||!pw){$("loginNote").textContent="ID와 접속 코드를 입력하세요.";return;}
+  const id=$("li_id").value.trim(), pw=$("li_pw").value;
+  if(!id||!pw){$("loginNote").textContent="아이디와 비밀번호를 입력하세요.";return;}
   $("loginBtn").disabled=true;$("loginNote").textContent="확인 중…";
-  if(!cfgReady()){
-    S.rater=rater;S.pw=pw;S.group=1;
-    const loc=localStorage.getItem(lkey());if(loc){const o=JSON.parse(loc);S.ratings=o.ratings||{};S.personal=o.personal||null;}
-    $("loginBanner").innerHTML='<div class="banner err">DB 미설정(로컬 테스트 모드): 응답은 이 기기에만 저장되며 CSV로만 받을 수 있습니다.</div>';
-    afterLogin();return;
-  }
+  if(!cfgReady()){S.rater=id;S.pw=pw;S.group=1;const l=localStorage.getItem(lkey());if(l){const o=JSON.parse(l);S.ratings=o.ratings||{};S.personal=o.personal||{};}else S.personal={};startSurvey();return;}
   try{
-    const res=await rpc("survey_login",{p_rater:rater,p_pw:pw});
-    if(!res||!res.ok){$("loginNote").textContent="";$("loginBanner").innerHTML='<div class="banner err">ID 또는 접속 코드가 올바르지 않습니다.</div>';$("loginBtn").disabled=false;return;}
-    S.rater=rater;S.pw=pw;S.group=res.group_id||1;S.ratings=res.ratings||{};S.personal=res.personal||null;S.submitted=!!res.submitted;
-    S.variant=res.rubric_variant||((hsh(rater)%2===0)?"A":"B");
-    const loc=localStorage.getItem(lkey());
-    if(loc){const o=JSON.parse(loc);if(Object.keys(o.ratings||{}).length>Object.keys(S.ratings).length){S.ratings=o.ratings;}if(!S.personal)S.personal=o.personal||null;}
-    afterLogin();
+    const res=await rpc("survey_login",{p_id:id,p_pw:pw});
+    if(!res||!res.ok){$("loginNote").textContent="";$("loginBanner").innerHTML='<div class="banner err">아이디 또는 비밀번호가 올바르지 않습니다.</div>';$("loginBtn").disabled=false;return;}
+    S.rater=id;S.pw=pw;S.group=res.group_id||1;S.variant=res.rubric_variant||"A";S.ratings=res.ratings||{};S.personal=res.personal||{};S.submitted=!!res.submitted;
+    const l=localStorage.getItem(lkey());if(l){const o=JSON.parse(l);if(Object.keys(o.ratings||{}).length>Object.keys(S.ratings).length)S.ratings=o.ratings;}
+    startSurvey();
   }catch(e){$("loginNote").textContent="";$("loginBanner").innerHTML='<div class="banner err">로그인 오류: '+e.message+'</div>';$("loginBtn").disabled=false;}
 };
-function afterLogin(){
-  $("login").classList.add("hidden");
-  if(S.personal){startSurvey();}
-  else{$("intro").classList.remove("hidden");}
+
+function suValid(){
+  const ok=$("su_consent").checked && $("su_id").value.trim().length>=3 && $("su_pw").value.length>=4 &&
+    $("su_pw").value===$("su_pw2").value && $("su_email").value.trim() && $("su_years").value.trim() && $("su_re").value && $("su_prog").value;
+  $("signupBtn").disabled=!ok;
+  $("signupNote").textContent = ok?"" : ($("su_pw").value&&$("su_pw").value!==$("su_pw2").value?"비밀번호가 일치하지 않습니다.":"동의 및 필수 항목(*)을 모두 입력해 주세요.");
+  return ok;
 }
-["consent","years","re_exp","prog_exp"].forEach(i=>$(i).addEventListener("input",()=>{
-  const ok=$("consent").checked && $("years").value.trim() && $("re_exp").value && $("prog_exp").value;
-  $("startBtn").disabled=!ok;$("introNote").textContent=ok?"":"동의 및 필수 항목(*)을 채워주세요.";
-}));
-$("startBtn").onclick=()=>{
-  S.personal={email:$("email").value.trim(),affiliation:$("affiliation").value.trim(),years_experience:parseInt($("years").value)||null,
-    re_experience:$("re_exp").value,programming_experience:$("prog_exp").value,consent:true};
-  $("intro").classList.add("hidden");checkpoint(false);startSurvey();
+["su_consent","su_id","su_pw","su_pw2","su_email","su_years","su_re","su_prog"].forEach(i=>$(i).addEventListener("input",suValid));
+$("signupBtn").onclick=async()=>{
+  if(!suValid())return;
+  const id=$("su_id").value.trim(),pw=$("su_pw").value;
+  const personal={affiliation:$("su_aff").value.trim(),years_experience:parseInt($("su_years").value)||null,re_experience:$("su_re").value,programming_experience:$("su_prog").value,consent:true};
+  $("signupBtn").disabled=true;$("signupNote").textContent="가입 중…";
+  if(!cfgReady()){S.rater=id;S.pw=pw;S.group=1;S.personal=personal;S.ratings={};startSurvey();return;}
+  try{
+    const res=await rpc("survey_signup",{p_id:id,p_pw:pw,p_email:$("su_email").value.trim(),p_personal:personal,p_invite:$("su_invite").value.trim()||null});
+    if(!res||!res.ok){
+      const m={id_taken:"이미 사용 중인 아이디입니다.",email_taken:"이미 가입된 이메일입니다.",invite:"초대 코드가 올바르지 않습니다.",short:"아이디는 3자, 비밀번호는 4자 이상이어야 합니다."}[res&&res.reason]||"가입에 실패했습니다.";
+      $("signupBanner").innerHTML='<div class="banner err">'+m+'</div>';$("signupNote").textContent="";$("signupBtn").disabled=false;return;
+    }
+    S.rater=id;S.pw=pw;S.group=res.group_id||1;S.variant=res.rubric_variant||"A";S.personal=personal;S.ratings={};S.submitted=false;
+    startSurvey();
+  }catch(e){$("signupBanner").innerHTML='<div class="banner err">가입 오류: '+e.message+'</div>';$("signupNote").textContent="";$("signupBtn").disabled=false;}
+};
+
+$("findIdBtn").onclick=async()=>{
+  const em=$("rc_email").value.trim();if(!em){$("findIdRes").textContent="이메일을 입력하세요.";return;}
+  if(!cfgReady()){$("findIdRes").textContent="DB 미설정";return;}
+  try{const res=await rpc("survey_find_id",{p_email:em});
+    $("findIdRes").textContent=res&&res.found?("아이디: "+res.rater_id):"해당 이메일로 가입된 계정이 없습니다.";
+  }catch(e){$("findIdRes").textContent="오류: "+e.message;}
+};
+$("resetBtn").onclick=async()=>{
+  const id=$("rc_id").value.trim(),em=$("rc_email2").value.trim(),np=$("rc_newpw").value;
+  if(!id||!em||!np){$("resetRes").textContent="모든 항목을 입력하세요.";return;}
+  if(!cfgReady()){$("resetRes").textContent="DB 미설정";return;}
+  try{const res=await rpc("survey_reset_pw",{p_id:id,p_email:em,p_new_pw:np});
+    if(res&&res.ok){$("recoverBanner").innerHTML='<div class="banner ok">비밀번호가 재설정되었습니다. 로그인하세요.</div>';setTimeout(()=>show("login"),1200);}
+    else $("resetRes").textContent=(res&&res.reason==="short")?"비밀번호는 4자 이상이어야 합니다.":"아이디와 이메일이 일치하지 않습니다.";
+  }catch(e){$("resetRes").textContent="오류: "+e.message;}
 };
 
 function startSurvey(){
   S.blocks=SURVEY_DATA.filter(b=>b.g===0||b.g===S.group);
   let first=S.blocks.findIndex(b=>b.preds.some(p=>!((b.b+"::"+p) in S.ratings)));
-  S.idx=first<0?0:first;
-  $("survey").classList.remove("hidden");$("who").textContent=S.rater+" · 그룹 "+S.group;
+  S.idx=first<0?0:first;show("survey");$("who").textContent=S.rater+" · 그룹 "+S.group;
   if(S.submitted)$("saveStatus").textContent="(이미 제출됨 — 수정 후 다시 제출 가능)";
   render();
 }
 const total=()=>S.blocks.reduce((a,b)=>a+b.preds.length,0);
 const done=()=>Object.keys(S.ratings).length;
 function render(){
-  const b=S.blocks[S.idx];
-  $("gt").textContent=b.gt;
-  $("instr").innerHTML=S.variant==="A"
-    ?'아래 예측 이름이 위 함수와 <b>같은 기능적 역할</b>을 가리키는 정도를 평정하세요.'
-    :'아래 예측 이름을 본 분석가가 위 함수를 <b>같은 함수로 인지</b>할 정도를 평정하세요.';
+  const b=S.blocks[S.idx];$("gt").textContent=b.gt;
+  $("instr").innerHTML=S.variant==="A"?'이 예측 이름이 위 함수와 <b>같은 역할</b>을 가리키는 정도를 평가하세요.':'분석가가 이 예측 이름을 보고 위 함수를 <b>같은 함수</b>로 인지할 정도를 평가하세요.';
   let h="";
-  b.preds.forEach(p=>{
-    const k=b.b+"::"+p, cur=S.ratings[k]?S.ratings[k].s:null;
-    const pe=p.replace(/'/g,"\\'");
+  b.preds.forEach(p=>{const k=b.b+"::"+p,cur=S.ratings[k]?S.ratings[k].s:null,pe=p.replace(/'/g,"\\'");
     let cells="";for(let v=5;v>=1;v--)cells+='<div class="cell '+(cur==v?'on':'')+'" onclick="setScore(\''+b.b+'\',\''+pe+'\','+v+')">'+v+'</div>';
-    h+='<div class="prow"><div class="pname"><span class="pred">'+(p||'(빈 예측)')+'</span></div><div class="scale">'+cells+'</div></div>';
-  });
+    h+='<div class="prow"><div class="pname"><span class="pred">'+(p||'(빈 예측)')+'</span></div><div class="scale">'+cells+'</div></div>';});
   $("rows").innerHTML=h;
   $("counter").textContent="블록 "+(S.idx+1)+" / "+S.blocks.length;
-  $("prog").style.width=(100*done()/total())+"%";
-  $("savedNote").textContent="평정 "+done()+" / "+total();
-  $("prevBtn").disabled=S.idx===0;
-  $("nextBtn").textContent=S.idx===S.blocks.length-1?"제출하기 ✓":"다음 ▶";
+  $("prog").style.width=(100*done()/total())+"%";$("savedNote").textContent="평가 "+done()+" / "+total();
+  $("prevBtn").disabled=S.idx===0;$("nextBtn").textContent=S.idx===S.blocks.length-1?"제출하기 ✓":"다음 ▶";
 }
-function setScore(b,pred,v){
-  const blk=S.blocks.find(x=>String(x.b)===String(b));
+function setScore(b,pred,v){const blk=S.blocks.find(x=>String(x.b)===String(b));
   S.ratings[b+"::"+pred]={b:+b,gt:blk.gt,pred:pred,s:v,t:new Date().toISOString()};
-  localStorage.setItem(lkey(),JSON.stringify({ratings:S.ratings,personal:S.personal}));
-  render();scheduleSave();
-}
+  localStorage.setItem(lkey(),JSON.stringify({ratings:S.ratings,personal:S.personal}));render();scheduleSave();}
 function scheduleSave(){clearTimeout(S.saveTimer);$("saveStatus").textContent="저장 중…";$("saveStatus").className="status";S.saveTimer=setTimeout(()=>checkpoint(false),1200);}
 async function checkpoint(submit){
   localStorage.setItem(lkey(),JSON.stringify({ratings:S.ratings,personal:S.personal}));
   if(!cfgReady()){$("saveStatus").textContent="로컬 저장됨";$("saveStatus").className="status ok";return true;}
-  try{
-    const res=await rpc("survey_save",{p_rater:S.rater,p_pw:S.pw,p_personal:S.personal,p_ratings:S.ratings,p_variant:S.variant,p_submitted:!!submit});
-    if(!res||!res.ok)throw new Error("인증 실패");
+  try{const res=await rpc("survey_save",{p_id:S.rater,p_pw:S.pw,p_ratings:S.ratings,p_submitted:!!submit});
+    if(!res||!res.ok)throw new Error("auth");
     $("saveStatus").textContent="저장됨 ✓";$("saveStatus").className="status ok";return true;
   }catch(e){$("saveStatus").textContent="오프라인 — 자동 재시도";$("saveStatus").className="status warn";return false;}
 }
@@ -183,8 +240,8 @@ $("nextBtn").onclick=()=>{checkpoint(false);if(S.idx<S.blocks.length-1){S.idx++;
 $("csvBtn").onclick=downloadCSV;$("dlBtn").onclick=downloadCSV;$("retryBtn").onclick=()=>finish();
 async function finish(){
   const d=done(),tp=total();
-  if(d<tp && !confirm((tp-d)+"개 문항이 비어 있습니다. 그대로 제출할까요? (나중에 같은 ID로 이어서 제출 가능)"))return;
-  $("survey").classList.add("hidden");$("done").classList.remove("hidden");$("doneMsg").textContent="제출 중…";$("doneBanner").innerHTML="";
+  if(d<tp && !confirm((tp-d)+"개 문항이 비어 있습니다. 그대로 제출할까요? (나중에 같은 계정으로 이어서 제출 가능)"))return;
+  show("done");$("doneMsg").textContent="제출 중…";$("doneBanner").innerHTML="";
   const ok=await checkpoint(true);
   if(ok){S.submitted=true;$("doneBanner").innerHTML='<div class="banner ok">제출 완료. 참여해 주셔서 감사합니다.</div>';$("doneMsg").textContent=d+"개 응답이 저장되었습니다.";}
   else{$("doneBanner").innerHTML='<div class="banner err">전송 실패 — 네트워크 확인 후 다시 시도하거나 CSV 백업을 연구자에게 전달해 주세요.</div>';$("doneMsg").textContent="응답은 기기에 보관되어 있습니다.";}
@@ -198,11 +255,10 @@ function downloadCSV(){
 }
 function flushOnExit(){
   if(!cfgReady()||!S.rater||!Object.keys(S.ratings).length)return;
-  try{
-    localStorage.setItem(lkey(),JSON.stringify({ratings:S.ratings,personal:S.personal}));
+  try{localStorage.setItem(lkey(),JSON.stringify({ratings:S.ratings,personal:S.personal}));
     fetch(SUPABASE_URL+"/rest/v1/rpc/survey_save",{method:"POST",keepalive:true,
       headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY,"Content-Type":"application/json"},
-      body:JSON.stringify({p_rater:S.rater,p_pw:S.pw,p_personal:S.personal,p_ratings:S.ratings,p_variant:S.variant,p_submitted:S.submitted})});
+      body:JSON.stringify({p_id:S.rater,p_pw:S.pw,p_ratings:S.ratings,p_submitted:S.submitted})});
   }catch(e){}
 }
 window.addEventListener("pagehide",flushOnExit);
