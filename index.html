@@ -36,6 +36,7 @@ a{color:var(--accent);cursor:pointer;text-decoration:none;font-weight:600}
 .gtlabel{font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:600}.gt{font-family:var(--sans);font-size:23px;font-weight:700;color:var(--accent)}
 .instr{font-size:13.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;margin-top:12px}.instr b{font-weight:700;color:var(--ink)}
 .prow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.prow.miss{background:var(--errbg);border-radius:8px}
 .pname{flex:1;min-width:150px}.pred{font-family:var(--sans);font-size:16px;font-weight:500}
 .scale{display:flex;gap:7px}.cell{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:10px;font-size:14px;font-weight:700;border:1px solid #d6d4e0;background:var(--card);color:var(--muted);cursor:pointer;user-select:none;transition:.12s}
 .cell:hover{border-color:var(--accent)}.cell.on{border-color:var(--accent);background:var(--accent);color:#fff}
@@ -120,6 +121,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
     <div class="instr" id="instr"></div>
     <div id="rows" style="margin-top:8px"></div>
   </div>
+  <div class="status warn" id="navWarn" style="margin:10px 2px 0;font-size:13px"></div>
   <div class="nav"><button class="btn sec" id="prevBtn">◀ 이전</button><button class="btn sec" id="csvBtn">CSV 백업</button><button class="btn" id="nextBtn">다음 ▶</button></div>
 </section>
 
@@ -133,7 +135,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 <script src="data.js"></script>
 <script>
 const $=id=>document.getElementById(id);
-let S={rater:"",pw:"",group:1,variant:"A",personal:null,ratings:{},blocks:[],idx:0,submitted:false,saveTimer:null};
+let S={rater:"",pw:"",group:1,variant:"A",personal:null,ratings:{},blocks:[],idx:0,submitted:false,saveTimer:null,warn:false};
 function cfgReady(){return window.SUPABASE_URL && !SUPABASE_URL.includes("YOUR-") && window.SURVEY_DB_ENABLED!==false}
 async function rpc(fn,body){
   const r=await fetch(SUPABASE_URL+"/rest/v1/rpc/"+fn,{method:"POST",
@@ -211,14 +213,15 @@ function startSurvey(){
 }
 const total=()=>S.blocks.reduce((a,b)=>a+b.preds.length,0);
 const done=()=>Object.keys(S.ratings).length;
+function blockDone(){const b=S.blocks[S.idx];return b.preds.every(p=>((b.b+"::"+p) in S.ratings));}
 function render(){
   const b=S.blocks[S.idx];$("gt").textContent=b.gt;
   $("instr").innerHTML=S.variant==="A"?'이 예측 이름이 위 함수와 <b>같은 역할</b>을 가리키는 정도를 평가하세요.':'분석가가 이 예측 이름을 보고 위 함수를 <b>같은 함수</b>로 인지할 정도를 평가하세요.';
   let h="";
   b.preds.forEach(p=>{const k=b.b+"::"+p,cur=S.ratings[k]?S.ratings[k].s:null,pe=p.replace(/'/g,"\\'");
     let cells="";for(let v=5;v>=1;v--)cells+='<div class="cell '+(cur==v?'on':'')+'" onclick="setScore(\''+b.b+'\',\''+pe+'\','+v+')">'+v+'</div>';
-    h+='<div class="prow"><div class="pname"><span class="pred">'+(p||'(빈 예측)')+'</span></div><div class="scale">'+cells+'</div></div>';});
-  $("rows").innerHTML=h;
+    h+='<div class="prow'+(S.warn&&cur==null?' miss':'')+'"><div class="pname"><span class="pred">'+(p||'(빈 예측)')+'</span></div><div class="scale">'+cells+'</div></div>';});
+  $("rows").innerHTML=h;$("navWarn").textContent=(S.warn&&!blockDone())?"이 블록의 모든 후보를 평가한 뒤 다음으로 넘어갈 수 있습니다.":"";
   $("counter").textContent="블록 "+(S.idx+1)+" / "+S.blocks.length;
   $("prog").style.width=(100*done()/total())+"%";$("savedNote").textContent="평가 "+done()+" / "+total();
   $("prevBtn").disabled=S.idx===0;$("nextBtn").textContent=S.idx===S.blocks.length-1?"제출하기 ✓":"다음 ▶";
@@ -235,8 +238,8 @@ async function checkpoint(submit){
     $("saveStatus").textContent="저장됨 ✓";$("saveStatus").className="status ok";return true;
   }catch(e){$("saveStatus").textContent="오프라인 — 자동 재시도";$("saveStatus").className="status warn";return false;}
 }
-$("prevBtn").onclick=()=>{if(S.idx>0){S.idx--;render()}};
-$("nextBtn").onclick=()=>{checkpoint(false);if(S.idx<S.blocks.length-1){S.idx++;render()}else finish()};
+$("prevBtn").onclick=()=>{if(S.idx>0){S.warn=false;S.idx--;render()}};
+$("nextBtn").onclick=()=>{if(!blockDone()){S.warn=true;render();return;}S.warn=false;checkpoint(false);if(S.idx<S.blocks.length-1){S.idx++;render()}else finish()};
 $("csvBtn").onclick=downloadCSV;$("dlBtn").onclick=downloadCSV;$("retryBtn").onclick=()=>finish();
 async function finish(){
   const d=done(),tp=total();
